@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Landing page profissional para tatuador ou estúdio de tatuagem, com portfólio, orçamento via WhatsApp e localização." />
+  <title>Boy Tattoo | Tatuagem autoral em São Paulo</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="assets/css/style.css" />
+</head>
+<body>
+
+  <header class="site-header" aria-label="Cabeçalho principal">
+    <a class="brand" href="#inicio" aria-label="Ir para o início">
+      <img src="assets/img/logo.png" alt="Logo Boy Tattoo" />
+      <span>Boy Tattoo</span>
+    </a>
+
+    <nav class="main-nav" id="main-nav" aria-label="Navegação principal">
+      <a href="#portfolio" class="nav-link">Portfólio</a>
+      <a href="#orcamento" class="nav-link">Orçamento</a>
+      <a href="#localizacao" class="nav-link">Localização</a>
+      <a href="#avaliacoes" class="nav-link">Avaliações</a>
+      <a href="#orcamento" class="btn btn-nav-cta">Agendar</a>
+            <a href="https://www.instagram.com/_boytattoo/" class="nav-link nav-instagram" target="_blank" rel="noopener" aria-label="Abrir Instagram do Boy Tattoo">
+        <span>Instagram</span>
+      </a>
+    </nav>
+
+    <button class="nav-toggle" id="nav-toggle" aria-label="Abrir menu" aria-expanded="false">
+      <span class="hamburger-line"></span>
+      <span class="hamburger-line"></span>
+      <span class="hamburger-line"></span>
+    </button>
+  </header>
+
+  <div class="mobile-overlay" id="mobile-overlay" aria-hidden="true"></div>
+
+  <main>
+    <section class="hero" id="inicio" aria-label="Apresentação principal">
+      <video class="hero-video" autoplay muted loop playsinline preload="metadata" poster="assets/img/hero-poster.jpg">
+        <source src="assets/videos/hero-tattoo.mp4" type="video/mp4" />
+      </video>
+
+      <div class="hero-overlay" aria-hidden="true"></div>
+
+      <div class="hero-content" data-reveal>
+        <span class="hero-eyebrow">Estúdio privado • Tattoo art</span>
+        <h1>Arte na pele com presença, técnica e identidade.</h1>
+        <p>Projetos autorais, traço limpo e atendimento pensado para cada detalhe — da ideia ao acabamento.</p>
+
+        <div class="hero-actions">
+          <a href="#orcamento" class="btn btn-primary">Solicitar orçamento</a>
+          <a href="#portfolio" class="btn btn-secondary">Ver portfólio</a>
+        </div>
+      </div>
+    </section>
+
+    <section class="portfolio section" id="portfolio">
+      <div class="section-header" data-reveal>
+        <span class="section-eyebrow">Portfólio</span>
+        <h2 class="section-title">Recentes</h2>
+        <p>Uma seleção de projetos feitos com atenção ao traço, composição, contraste e acabamento.</p>
+      </div>
+
+      <div class="portfolio-grid">
+        <article class="portfolio-item" data-reveal="scale" data-video-src="assets/videos/portfolio-01.mp4">
+          <button class="portfolio-trigger" type="button" aria-label="Ver vídeo do trabalho Portfolio 01">
+            <img src="assets/img/portfolio-01.jpg" alt="Tatuagem autoral portfolio 01" loading="lazy" />
+            <span class="portfolio-overlay">
+              <span>Portfolio 01</span>
+              <strong>Ver processo</strong>
+            </span>
+          </button>
+        </article>
+
+        <article class="portfolio-item" data-reveal="scale" data-video-src="assets/videos/portfolio-02.mp4">
+          <button class="portfolio-trigger" type="button" aria-label="Ver vídeo do trabalho Portfolio 02">
+            <img src="assets/img/portfolio-02.jpg" alt="Tatuagem autoral portfolio 02" loading="lazy" />
+            <span class="portfolio-overlay">
+              <span>Portfolio 02</span>
+              <strong>Ver processo</strong>
+            </span>
+          </button>
+        </article>
+
+        <article class="portfolio-item" data-reveal="scale" data-video-src="assets/videos/portfolio-03.mp4">
+          <button class="portfolio-trigger" type="button" aria-label="Ver vídeo do trabalho Portfolio 03">
+            <img src="assets/img/portfolio-03.jpg" alt="Tatuagem autoral portfolio 03" loading="lazy" />
+            <span class="portfolio-overlay">
+              <span>Portfolio 03</span>
+              <strong>Ver processo</strong>
+            </span>
+          </button>
+        </article>
+
+        <article class="portfolio-item" data-reveal="scale" data-video-src="assets/videos/portfolio-04.mp4">
+          <button class="portfolio-trigger" type="button" aria-label="Ver vídeo do trabalho Portfolio 04">
+            <img src="assets/img/portfolio-04.jpg" alt="Tatuagem autoral portfolio 04" loading="lazy" />
+            <span class="portfolio-overlay">
+              <span>Portfolio 04</span>
+              <strong>Ver processo</strong>
+            </span>
+          </button>
+        </article>
+
+        <article class="portfolio-item" data-reveal="scale" data-video-src="assets/videos/portfolio-05.mp4">
+          <button class="portfolio-trigger" type="button" aria-label="Ver vídeo do trabalho Portfolio 05">
+            <img src="assets/img/portfolio-05.jpg" alt="Tatuagem autoral portfolio 05" loading="lazy" />
+            <span class="portfolio-overlay">
+              <span>Portfolio 05</span>
+              <strong>Ver processo</strong>
+            </span>
+          </button>
+        </article>
+
+        <article class="portfolio-item" data-reveal="scale" data-video-src="assets/videos/portfolio-06.mp4">
+          <button class="portfolio-trigger" type="button" aria-label="Ver vídeo do trabalho Portfolio 06">
+            <img src="assets/img/portfolio-06.jpg" alt="Tatuagem autoral portfolio 06" loading="lazy" />
+            <span class="portfolio-overlay">
+              <span>Portfolio 06</span>
+              <strong>Ver processo</strong>
+            </span>
+          </button>
+        </article>
+      </div>
+    </section>
+
+    <section class="budget section" id="orcamento">
+      <div class="budget-copy" data-reveal>
+        <span>Orçamento</span>
+        <h2>Quer transformar sua ideia em um projeto bem desenhado?</h2>
+        <p>Envie sua ideia, região do corpo e referências. O retorno é feito com orientação, disponibilidade e uma estimativa inicial para o seu projeto.</p>
+        <ul class="budget-notes">
+          <li>Atendimento com horário agendado.</li>
+          <li>Projetos personalizados para cada cliente.</li>
+          <li>Resposta direta pelo WhatsApp.</li>
+        </ul>
+      </div>
+
+      <form id="budget-form" class="budget-form" data-reveal>
+        <div class="form-row">
+          <label for="name">Nome</label>
+          <input id="name" name="name" type="text" placeholder="Seu nome" required />
+        </div>
+
+        <div class="form-row">
+          <label for="phone">WhatsApp</label>
+          <input id="phone" name="phone" type="tel" placeholder="(11) 99999-9999" required />
+        </div>
+
+        <div class="form-row">
+          <label for="email">E-mail <small>opcional</small></label>
+          <input id="email" name="email" type="email" placeholder="seuemail@email.com" />
+        </div>
+
+        <div class="form-row">
+          <label for="body-area">Região do corpo</label>
+          <input id="body-area" name="bodyArea" type="text" placeholder="Braço, perna, costas..." required />
+        </div>
+
+        <div class="form-row">
+          <label for="size">Tamanho aproximado</label>
+          <select id="size" name="size" required>
+            <option value="">Selecione</option>
+            <option value="Pequena">Pequena</option>
+            <option value="Média">Média</option>
+            <option value="Grande">Grande</option>
+            <option value="Ainda não sei">Ainda não sei</option>
+          </select>
+        </div>
+
+        <div class="form-row">
+          <label for="style">Estilo desejado</label>
+          <select id="style" name="style" required>
+            <option value="">Selecione</option>
+            <option value="Fineline">Fineline</option>
+            <option value="Blackwork">Blackwork</option>
+            <option value="Realismo preto e cinza">Realismo preto e cinza</option>
+            <option value="Minimalista">Minimalista</option>
+            <option value="Autoral">Autoral</option>
+            <option value="Outro">Outro</option>
+          </select>
+        </div>
+
+        <div class="form-row form-full">
+          <label for="idea">Descrição da ideia</label>
+          <textarea id="idea" name="idea" rows="5" placeholder="Conte a ideia, referências, detalhes importantes e estilo que você imagina." required></textarea>
+        </div>
+
+        <div class="form-row form-full">
+          <label for="reference">Link de referência <small>opcional</small></label>
+          <input id="reference" name="reference" type="url" placeholder="Instagram, Pinterest, Google Drive..." />
+        </div>
+
+        <button class="btn btn-primary form-submit" type="submit">Enviar orçamento</button>
+        <p class="form-feedback" id="form-feedback" aria-live="polite"></p>
+      </form>
+    </section>
+
+    <section class="location section" id="localizacao">
+      <div class="location-content" data-reveal>
+        <span>Localização</span>
+        <h2>Atendimento em São Paulo</h2>
+        <p>Estúdio com horário agendado para garantir uma experiência tranquila, organizada e exclusiva.</p>
+        <a href="https://www.google.com/maps/search/?api=1&query=S%C3%A3o%20Paulo%20SP" class="btn btn-primary" target="_blank" rel="noopener">Abrir no Google Maps</a>
+      </div>
+
+      <div class="map-wrapper" data-reveal>
+        <iframe
+          title="Mapa da localização do estúdio"
+          src="https://www.google.com/maps?q=S%C3%A3o%20Paulo%2C%20SP&output=embed"
+          loading="lazy"
+          referrerpolicy="no-referrer-when-downgrade">
+        </iframe>
+      </div>
+    </section>
+
+    <section class="testimonials section" id="avaliacoes" aria-label="Avaliações de clientes">
+      <div class="section-header" data-reveal>
+        <span class="section-eyebrow">Experiências</span>
+        <h2 class="section-title">O que dizem os clientes</h2>
+        <p>Relatos de quem passou pelo processo, da primeira ideia ao resultado final na pele.</p>
+      </div>
+
+      <div class="testimonials-carousel" data-testimonials-carousel data-reveal>
+        <div class="testimonials-track">
+          <article class="testimonial-card">
+            <div class="testimonial-card__top">
+              <div class="testimonial-avatar">LM</div>
+              <div>
+                <h3>Lucas M.</h3>
+                <span>Projeto autoral</span>
+              </div>
+            </div>
+            <p>“Cheguei com uma ideia meio solta e saí com um projeto muito mais forte do que imaginei. Atendimento tranquilo, traço limpo e muito cuidado em cada detalhe.”</p>
+            <div class="testimonial-rating" aria-label="Avaliação 5 de 5">★★★★★ <strong>5.0</strong></div>
+          </article>
+
+          <article class="testimonial-card">
+            <div class="testimonial-card__top">
+              <div class="testimonial-avatar">RS</div>
+              <div>
+                <h3>Rafael S.</h3>
+                <span>Blackwork</span>
+              </div>
+            </div>
+            <p>“O processo foi muito profissional do começo ao fim. A arte ficou exatamente no estilo que eu queria, com acabamento impecável.”</p>
+            <div class="testimonial-rating" aria-label="Avaliação 5 de 5">★★★★★ <strong>5.0</strong></div>
+          </article>
+
+          <article class="testimonial-card">
+            <div class="testimonial-card__top">
+              <div class="testimonial-avatar">CR</div>
+              <div>
+                <h3>Camila R.</h3>
+                <span>Primeira tattoo</span>
+              </div>
+            </div>
+            <p>“Me senti segura desde a primeira conversa. Tudo foi explicado com calma, o ambiente é organizado e o resultado ficou muito acima do esperado.”</p>
+            <div class="testimonial-rating" aria-label="Avaliação 5 de 5">★★★★★ <strong>5.0</strong></div>
+          </article>
+
+          <article class="testimonial-card">
+            <div class="testimonial-card__top">
+              <div class="testimonial-avatar">JP</div>
+              <div>
+                <h3>João P.</h3>
+                <span>Traço fino</span>
+              </div>
+            </div>
+            <p>“Curti muito a forma como ele adaptou minha referência para algo único. Ficou autoral, bem posicionado e com presença.”</p>
+            <div class="testimonial-rating" aria-label="Avaliação 5 de 5">★★★★★ <strong>5.0</strong></div>
+          </article>
+
+          <article class="testimonial-card">
+            <div class="testimonial-card__top">
+              <div class="testimonial-avatar">MA</div>
+              <div>
+                <h3>Marina A.</h3>
+                <span>Acabamento</span>
+              </div>
+            </div>
+            <p>“Foi minha primeira tatuagem e a experiência foi excelente. Atendimento cuidadoso, higiene impecável e um resultado que ficou perfeito.”</p>
+            <div class="testimonial-rating" aria-label="Avaliação 5 de 5">★★★★★ <strong>5.0</strong></div>
+          </article>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="footer-brand">
+      <strong>Boy Tattoo</strong>
+      <span>Tatuagem autoral em São Paulo.</span>
+    </div>
+
+    <div class="footer-links">
+      <a href="#portfolio">Portfólio</a>
+      <a href="#orcamento">Orçamento</a>
+      <a href="#localizacao">Localização</a>
+      <a href="#avaliacoes">Avaliações</a>
+      <a href="https://www.instagram.com/" target="_blank" rel="noopener">Instagram</a>
+      <a href="https://wa.me/5511941330786" target="_blank" rel="noopener">WhatsApp</a>
+    </div>
+
+    <p>© <span id="current-year"></span> Boy Tattoo. Todos os direitos reservados.</p>
+  </footer>
+
+  <!-- WhatsApp fixo -->
+  <a href="https://wa.me/5511941330786" class="whatsapp-float" target="_blank" rel="noopener" aria-label="Fale pelo WhatsApp">
+    <svg viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M16.004 2.667A13.28 13.28 0 0 0 2.72 15.947a13.2 13.2 0 0 0 1.78 6.627L2.667 29.333l6.96-1.82A13.28 13.28 0 0 0 16.004 29.3c7.337 0 13.33-5.953 13.33-13.333S23.34 2.667 16.003 2.667Zm0 24.38a11 11 0 0 1-5.604-1.533l-.4-.24-4.14 1.08 1.1-4.02-.26-.42a10.94 10.94 0 0 1-1.687-5.867c0-6.1 4.94-11.04 11.04-11.04 6.1 0 11.04 4.94 11.04 11.04-.053 6.1-4.993 11.04-11.093 11.04l.004-.04Zm6.06-8.267c-.334-.167-1.96-.967-2.264-1.08-.3-.113-.52-.167-.74.167s-.847 1.08-1.04 1.3c-.193.22-.38.247-.713.087-.334-.167-1.407-.52-2.68-1.66-.993-.887-1.66-1.98-1.853-2.314-.194-.333-.02-.513.146-.68.147-.147.334-.387.5-.58.167-.193.22-.333.334-.553.113-.22.06-.413-.034-.58-.093-.167-.74-1.787-1.013-2.447-.267-.64-.54-.553-.74-.567h-.633c-.22 0-.574.08-.874.407-.3.333-1.147 1.12-1.147 2.733s1.174 3.173 1.34 3.387c.167.22 2.314 3.533 5.607 4.953.786.34 1.4.54 1.88.693.787.253 1.506.22 2.073.133.633-.093 1.96-.8 2.24-1.573.28-.773.28-1.44.193-1.573-.08-.14-.3-.22-.633-.393Z" fill="#fff"/></svg>
+  </a>
+
+  <!-- Modal premium de vídeo do portfólio -->
+  <div class="portfolio-video-modal" id="portfolioVideoModal" aria-hidden="true">
+    <div class="portfolio-video-modal__backdrop" data-close-video-modal></div>
+
+    <div class="portfolio-video-modal__dialog" role="dialog" aria-modal="true" aria-label="Vídeo do portfólio">
+      <button class="portfolio-video-modal__close" type="button" data-close-video-modal aria-label="Fechar vídeo">
+        ×
+      </button>
+
+      <div class="portfolio-video-modal__frame">
+        <video
+          id="portfolioVideoPlayer"
+          class="portfolio-video-modal__video"
+          controls
+          autoplay
+          muted
+          loop
+          playsinline
+        ></video>
+      </div>
+
+      <div class="portfolio-video-modal__content">
+        <span>Processo / detalhe</span>
+        <p data-video-modal-message>Uma visão mais próxima do trabalho, do traço e do acabamento.</p>
+      </div>
+    </div>
+  </div>
+
+  <script src="assets/js/main.js"></script>
+</body>
+</html>
