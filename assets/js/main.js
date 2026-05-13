@@ -4,6 +4,8 @@ const WHATSAPP_NUMBER = "5511941330786";
 const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
 document.addEventListener("DOMContentLoaded", () => {
+  safeInit("Page loader", initPageLoader);
+
   if (prefersReducedMotion) {
     document.documentElement.classList.add("reduced-motion");
   }
@@ -40,6 +42,124 @@ function safeInit(name, fn) {
   } catch (error) {
     console.error(`Erro ao iniciar ${name}:`, error);
   }
+}
+
+
+/* ========================================
+   LOADING PREMIUM — CARREGAMENTO DA PÁGINA
+   ======================================== */
+function initPageLoader() {
+  const loader = document.getElementById("pageLoader");
+  const bar = document.getElementById("pageLoaderBar");
+  const percent = document.getElementById("pageLoaderPercent");
+
+  if (!loader) {
+    document.body.classList.remove("is-loading");
+    document.body.classList.add("is-loaded");
+    return;
+  }
+
+  document.body.classList.add("is-loading");
+
+  let progress = 0;
+  let isDone = false;
+
+  const setProgress = (value) => {
+    progress = Math.max(progress, Math.min(value, 100));
+
+    if (bar) {
+      bar.style.width = `${progress}%`;
+    }
+
+    if (percent) {
+      percent.textContent = `${Math.round(progress)}%`;
+    }
+  };
+
+  const fakeProgress = window.setInterval(() => {
+    if (isDone) return;
+
+    if (progress < 82) {
+      setProgress(progress + Math.random() * 9 + 3);
+    } else if (progress < 94) {
+      setProgress(progress + Math.random() * 2);
+    }
+  }, 180);
+
+  const waitForImages = () => {
+    const images = Array.from(document.images || []);
+
+    if (!images.length) return Promise.resolve();
+
+    return Promise.allSettled(
+      images.map((img) => {
+        if (img.complete) return Promise.resolve();
+
+        return new Promise((resolve) => {
+          img.addEventListener("load", resolve, { once: true });
+          img.addEventListener("error", resolve, { once: true });
+        });
+      })
+    );
+  };
+
+  const waitForHeroVideo = () => {
+    const video = document.querySelector(".hero-video");
+
+    if (!video) return Promise.resolve();
+    if (video.readyState >= 2) return Promise.resolve();
+
+    return new Promise((resolve) => {
+      const done = () => resolve();
+
+      video.addEventListener("loadeddata", done, { once: true });
+      video.addEventListener("canplay", done, { once: true });
+      video.addEventListener("error", done, { once: true });
+
+      window.setTimeout(resolve, 2500);
+    });
+  };
+
+  const revealVisibleElementsAfterLoad = () => {
+    document.body.classList.add("is-page-loaded");
+
+    document.querySelectorAll("[data-reveal], .hero-animate-item").forEach((element) => {
+      element.classList.add("is-revealed", "is-visible");
+    });
+  };
+
+  const finishLoading = () => {
+    if (isDone) return;
+
+    isDone = true;
+    window.clearInterval(fakeProgress);
+    setProgress(100);
+    revealVisibleElementsAfterLoad();
+
+    window.setTimeout(() => {
+      loader.classList.add("is-hidden");
+      document.body.classList.remove("is-loading");
+      document.body.classList.add("is-loaded");
+    }, 420);
+
+    window.setTimeout(() => {
+      loader.remove();
+    }, 1300);
+  };
+
+  const minimumTime = new Promise((resolve) => window.setTimeout(resolve, 900));
+  const maximumTime = new Promise((resolve) => window.setTimeout(resolve, 4200));
+
+  Promise.race([
+    Promise.all([waitForImages(), waitForHeroVideo(), minimumTime]),
+    maximumTime
+  ]).then(finishLoading).catch(finishLoading);
+
+  window.addEventListener("pageshow", () => {
+    if (document.body.classList.contains("is-loaded")) {
+      loader.remove();
+    }
+  });
 }
 
 /* ========================================

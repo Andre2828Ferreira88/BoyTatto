@@ -9,7 +9,32 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="assets/css/style.css" />
 </head>
-<body>
+<body class="is-loading">
+
+  <div class="page-loader" id="pageLoader" aria-label="Carregando site" role="status">
+    <div class="page-loader__inner">
+      <div class="page-loader__brand">
+        <img src="assets/img/logo.png" alt="BOY TATTO" class="page-loader__logo">
+        <span>BOY TATTO</span>
+      </div>
+
+      <div class="page-loader__mark" aria-hidden="true">
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
+
+      <div class="page-loader__progress" aria-hidden="true">
+        <div class="page-loader__bar" id="pageLoaderBar"></div>
+      </div>
+
+      <div class="page-loader__meta">
+        <span>Carregando experiência</span>
+        <strong id="pageLoaderPercent">0%</strong>
+      </div>
+    </div>
+  </div>
+
 
   <header class="site-header" data-navbar aria-label="Cabeçalho principal">
     <a class="brand" href="#inicio" aria-label="Ir para o início">
@@ -39,7 +64,7 @@
 
   <main>
     <section class="hero" id="inicio" aria-label="Apresentação principal">
-      <video class="hero-video" autoplay muted loop playsinline preload="metadata" poster="assets/img/hero-poster.jpg">
+      <video class="hero-video" autoplay muted loop playsinline preload="metadata">
         <source src="assets/videos/hero-tattoo.mp4" type="video/mp4" />
       </video>
 

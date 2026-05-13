@@ -375,7 +375,10 @@ button {
   display: flex;
   align-items: center;
   overflow: hidden;
-  background: var(--bg) url("../img/hero-poster.jpg") center / cover no-repeat;
+  background:
+    radial-gradient(circle at 20% 20%, rgba(0, 229, 255, 0.08), transparent 34%),
+    radial-gradient(circle at 82% 26%, rgba(255, 42, 191, 0.08), transparent 34%),
+    var(--bg);
 }
 
 .hero-video {
@@ -3292,5 +3295,287 @@ body.is-menu-open [data-navbar] {
     visibility: visible !important;
     pointer-events: auto !important;
     transform: translateX(0) !important;
+  }
+}
+
+
+/* ========================================
+   LOADING PREMIUM — BOY TATTO
+   ======================================== */
+.page-loader {
+  position: fixed;
+  inset: 0;
+  z-index: 999999;
+  display: grid;
+  place-items: center;
+  background:
+    radial-gradient(circle at 18% 18%, rgba(0, 229, 255, 0.16), transparent 32%),
+    radial-gradient(circle at 82% 28%, rgba(255, 42, 191, 0.14), transparent 34%),
+    linear-gradient(180deg, #050508 0%, #090910 52%, #050508 100%);
+  color: #fff;
+  overflow: hidden;
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+  transition:
+    opacity .75s cubic-bezier(.2,.7,.2,1),
+    visibility .75s cubic-bezier(.2,.7,.2,1);
+}
+
+.page-loader::before {
+  content: "";
+  position: absolute;
+  inset: -20%;
+  background:
+    linear-gradient(115deg, transparent 0%, rgba(0,229,255,.08) 35%, transparent 48%, rgba(255,42,191,.08) 64%, transparent 100%);
+  animation: loaderLightSweep 3.6s cubic-bezier(.2,.7,.2,1) infinite;
+  pointer-events: none;
+}
+
+.page-loader::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(255,255,255,.025) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,.025) 1px, transparent 1px);
+  background-size: 54px 54px;
+  -webkit-mask-image: radial-gradient(circle at center, black 0%, transparent 72%);
+  mask-image: radial-gradient(circle at center, black 0%, transparent 72%);
+  opacity: .42;
+  pointer-events: none;
+}
+
+.page-loader.is-hidden {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.page-loader__inner {
+  position: relative;
+  z-index: 2;
+  width: min(420px, calc(100% - 48px));
+  display: grid;
+  justify-items: center;
+  gap: 24px;
+  text-align: center;
+}
+
+.page-loader__brand {
+  display: grid;
+  justify-items: center;
+  gap: 14px;
+}
+
+.page-loader__logo {
+  width: 82px;
+  height: 82px;
+  object-fit: contain;
+  border-radius: 999px;
+  filter:
+    drop-shadow(0 0 18px rgba(0,229,255,.18))
+    drop-shadow(0 0 24px rgba(255,42,191,.14));
+  animation: loaderLogoPulse 2.4s ease-in-out infinite;
+}
+
+.page-loader__brand span {
+  font-family: var(--font-display, serif);
+  font-size: clamp(2.1rem, 6vw, 3.2rem);
+  font-weight: 700;
+  line-height: .9;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+}
+
+.page-loader__mark {
+  position: relative;
+  width: 118px;
+  height: 118px;
+  display: grid;
+  place-items: center;
+}
+
+.page-loader__mark::before,
+.page-loader__mark::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 999px;
+  border: 1px solid rgba(255,255,255,.12);
+}
+
+.page-loader__mark::before {
+  border-top-color: rgba(0,229,255,.82);
+  border-right-color: rgba(139,44,255,.45);
+  animation: loaderSpin 1.45s linear infinite;
+}
+
+.page-loader__mark::after {
+  inset: 14px;
+  border-bottom-color: rgba(255,42,191,.78);
+  border-left-color: rgba(0,229,255,.36);
+  animation: loaderSpinReverse 2.2s linear infinite;
+}
+
+.page-loader__mark span {
+  position: absolute;
+  width: 8px;
+  height: 8px;
+  border-radius: 999px;
+  background: linear-gradient(135deg, #00e5ff, #ff2abf);
+  box-shadow:
+    0 0 18px rgba(0,229,255,.48),
+    0 0 24px rgba(255,42,191,.28);
+  animation: loaderDotPulse 1.2s ease-in-out infinite;
+}
+
+.page-loader__mark span:nth-child(2) {
+  transform: translateX(-26px);
+  animation-delay: .16s;
+}
+
+.page-loader__mark span:nth-child(3) {
+  transform: translateX(26px);
+  animation-delay: .32s;
+}
+
+.page-loader__progress {
+  width: 100%;
+  height: 3px;
+  overflow: hidden;
+  border-radius: 999px;
+  background: rgba(255,255,255,.10);
+}
+
+.page-loader__bar {
+  width: 0%;
+  height: 100%;
+  border-radius: inherit;
+  background: linear-gradient(90deg, #00e5ff, #8b2cff, #ff2abf);
+  box-shadow: 0 0 20px rgba(0,229,255,.35);
+  transition: width .35s cubic-bezier(.2,.7,.2,1);
+}
+
+.page-loader__meta {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  font-family: var(--font-body, sans-serif);
+  color: rgba(255,255,255,.66);
+  font-size: .75rem;
+  font-weight: 700;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+}
+
+.page-loader__meta strong {
+  color: #fff;
+  font-weight: 800;
+}
+
+body.is-loading {
+  overflow: hidden;
+}
+
+body.is-loaded main {
+  animation: siteEnterAfterLoad .85s cubic-bezier(.2,.7,.2,1) both;
+}
+
+@keyframes loaderLightSweep {
+  0% {
+    transform: translateX(-18%) rotate(0deg);
+    opacity: .45;
+  }
+
+  50% {
+    opacity: .85;
+  }
+
+  100% {
+    transform: translateX(18%) rotate(8deg);
+    opacity: .45;
+  }
+}
+
+@keyframes loaderLogoPulse {
+  0%, 100% {
+    transform: scale(1);
+    opacity: .88;
+  }
+
+  50% {
+    transform: scale(1.045);
+    opacity: 1;
+  }
+}
+
+@keyframes loaderSpin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes loaderSpinReverse {
+  to {
+    transform: rotate(-360deg);
+  }
+}
+
+@keyframes loaderDotPulse {
+  0%, 100% {
+    opacity: .34;
+    transform: translateY(0) scale(.82);
+  }
+
+  50% {
+    opacity: 1;
+    transform: translateY(-4px) scale(1.08);
+  }
+}
+
+@keyframes siteEnterAfterLoad {
+  from {
+    opacity: 0;
+    transform: translateY(18px);
+    filter: blur(8px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+    filter: blur(0);
+  }
+}
+
+@media (max-width: 768px) {
+  .page-loader__logo {
+    width: 68px;
+    height: 68px;
+  }
+
+  .page-loader__mark {
+    width: 96px;
+    height: 96px;
+  }
+
+  .page-loader__inner {
+    gap: 20px;
+  }
+
+  .page-loader__meta {
+    font-size: .68rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .page-loader::before,
+  .page-loader__logo,
+  .page-loader__mark::before,
+  .page-loader__mark::after,
+  .page-loader__mark span {
+    animation: none !important;
   }
 }
