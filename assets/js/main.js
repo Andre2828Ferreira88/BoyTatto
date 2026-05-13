@@ -811,3 +811,55 @@ function initScrollProgress() {
 
   update();
 }
+
+/* ========================================
+   FALLBACK MOBILE — EVITA TELA VAZIA SE REVEAL FALHAR
+   ======================================== */
+(function initMobileVisibilityFallback() {
+  const revealVisibleElements = () => {
+    const isMobile = window.matchMedia && window.matchMedia("(max-width: 920px)").matches;
+    if (!isMobile) return;
+
+    document.body.classList.add("is-page-loaded");
+
+    const selectors = [
+      "[data-reveal]",
+      ".hero-animate-item",
+      ".hero-content",
+      ".hero-eyebrow",
+      ".hero h1",
+      ".hero p",
+      ".hero-actions",
+      ".section",
+      ".section-header",
+      ".portfolio-item",
+      ".budget-copy",
+      ".budget-form",
+      ".location-content",
+      ".map-wrapper",
+      ".testimonials-carousel",
+      ".site-footer"
+    ];
+
+    document.querySelectorAll(selectors.join(",")).forEach((element) => {
+      element.classList.add("is-revealed", "is-visible");
+    });
+  };
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", () => {
+      revealVisibleElements();
+      window.setTimeout(revealVisibleElements, 450);
+      window.setTimeout(revealVisibleElements, 1200);
+    });
+  } else {
+    revealVisibleElements();
+    window.setTimeout(revealVisibleElements, 450);
+    window.setTimeout(revealVisibleElements, 1200);
+  }
+
+  window.addEventListener("load", () => {
+    revealVisibleElements();
+    window.setTimeout(revealVisibleElements, 600);
+  });
+})();
