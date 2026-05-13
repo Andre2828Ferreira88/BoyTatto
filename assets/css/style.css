@@ -3579,3 +3579,33 @@ body.is-loaded main {
     animation: none !important;
   }
 }
+
+
+/* ==================================================
+   FIX HERO VIDEO MOBILE — LOOP SEM PAUSA VISÍVEL
+   ================================================== */
+.hero-video {
+  pointer-events: none;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.hero video::-webkit-media-controls,
+.hero video::-webkit-media-controls-panel,
+.hero video::-webkit-media-controls-play-button,
+.hero video::-webkit-media-controls-start-playback-button {
+  display: none !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
+}
+
+@media (max-width: 768px) {
+  .hero-video {
+    display: block !important;
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: cover !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+  }
+}

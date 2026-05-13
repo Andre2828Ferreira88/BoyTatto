@@ -179,16 +179,72 @@ function setupHeroVideo() {
   const video = document.querySelector(".hero-video");
   if (!video) return;
 
-  video.muted = true;
-  video.playsInline = true;
+  let retryTimer = null;
 
-  const playPromise = video.play();
+  const forceVideoAttributes = () => {
+    video.muted = true;
+    video.defaultMuted = true;
+    video.loop = true;
+    video.autoplay = true;
+    video.playsInline = true;
+    video.setAttribute("muted", "");
+    video.setAttribute("loop", "");
+    video.setAttribute("autoplay", "");
+    video.setAttribute("playsinline", "");
+    video.setAttribute("webkit-playsinline", "");
+    video.removeAttribute("controls");
+    video.controls = false;
+  };
 
-  if (playPromise && typeof playPromise.catch === "function") {
-    playPromise.catch(() => {
-      video.load();
-    });
-  }
+  const tryPlay = () => {
+    forceVideoAttributes();
+
+    const playPromise = video.play();
+
+    if (playPromise && typeof playPromise.catch === "function") {
+      playPromise.catch(() => {
+        window.clearTimeout(retryTimer);
+        retryTimer = window.setTimeout(() => {
+          forceVideoAttributes();
+          video.play().catch(() => {
+            // Alguns navegadores mobile podem bloquear autoplay em modo economia de energia.
+            // O próximo toque/scroll do usuário tenta iniciar novamente sem mostrar controles.
+          });
+        }, 650);
+      });
+    }
+  };
+
+  const keepLooping = () => {
+    if (!video.paused && !video.ended) return;
+    tryPlay();
+  };
+
+  forceVideoAttributes();
+  tryPlay();
+
+  ["loadedmetadata", "loadeddata", "canplay", "canplaythrough"].forEach((eventName) => {
+    video.addEventListener(eventName, tryPlay, { passive: true });
+  });
+
+  video.addEventListener("pause", () => {
+    window.setTimeout(keepLooping, 120);
+  });
+
+  video.addEventListener("ended", () => {
+    video.currentTime = 0;
+    tryPlay();
+  });
+
+  document.addEventListener("visibilitychange", () => {
+    if (!document.hidden) tryPlay();
+  });
+
+  window.addEventListener("pageshow", tryPlay);
+
+  ["touchstart", "pointerdown", "scroll"].forEach((eventName) => {
+    window.addEventListener(eventName, tryPlay, { passive: true });
+  });
 }
 
 /* ========================================
