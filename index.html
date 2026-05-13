@@ -11,13 +11,13 @@
 </head>
 <body>
 
-  <header class="site-header" aria-label="Cabeçalho principal">
+  <header class="site-header" data-navbar aria-label="Cabeçalho principal">
     <a class="brand" href="#inicio" aria-label="Ir para o início">
       <img src="assets/img/logo.png" alt="Logo Boy Tattoo" />
       <span>Boy Tattoo</span>
     </a>
 
-    <nav class="main-nav" id="main-nav" aria-label="Navegação principal">
+    <nav class="main-nav" id="main-nav" data-mobile-menu aria-label="Navegação principal" aria-hidden="false">
       <a href="#portfolio" class="nav-link">Portfólio</a>
       <a href="#orcamento" class="nav-link">Orçamento</a>
       <a href="#localizacao" class="nav-link">Localização</a>
@@ -28,7 +28,7 @@
       </a>
     </nav>
 
-    <button class="nav-toggle" id="nav-toggle" aria-label="Abrir menu" aria-expanded="false">
+    <button class="nav-toggle" id="nav-toggle" data-menu-toggle aria-label="Abrir menu" aria-expanded="false">
       <span class="hamburger-line"></span>
       <span class="hamburger-line"></span>
       <span class="hamburger-line"></span>
@@ -130,71 +130,86 @@
     <section class="budget section" id="orcamento">
       <div class="budget-copy" data-reveal>
         <span>Orçamento</span>
-        <h2>Quer transformar sua ideia em um projeto bem desenhado?</h2>
-        <p>Envie sua ideia, região do corpo e referências. O retorno é feito com orientação, disponibilidade e uma estimativa inicial para o seu projeto.</p>
-        <ul class="budget-notes">
-          <li>Atendimento com horário agendado.</li>
-          <li>Projetos personalizados para cada cliente.</li>
-          <li>Resposta direta pelo WhatsApp.</li>
-        </ul>
+        <h2>Comece seu orçamento</h2>
+        <p>Conte sua ideia em poucos passos. O retorno vem pelo WhatsApp com orientação, agenda e estimativa inicial.</p>
+
+        <div class="budget-quick-steps" aria-label="Como funciona o orçamento">
+          <div class="budget-step-card">
+            <strong>01</strong>
+            <span>Escolha região, tamanho e estilo.</span>
+          </div>
+          <div class="budget-step-card">
+            <strong>02</strong>
+            <span>Envie sua ideia direto no WhatsApp.</span>
+          </div>
+          <div class="budget-step-card">
+            <strong>03</strong>
+            <span>Receba retorno para alinhar agenda.</span>
+          </div>
+        </div>
       </div>
 
       <form id="budget-form" class="budget-form" data-reveal>
         <div class="form-row">
           <label for="name">Nome</label>
-          <input id="name" name="name" type="text" placeholder="Seu nome" required />
+          <input id="name" name="name" type="text" placeholder="Seu nome" autocomplete="name" required />
         </div>
 
         <div class="form-row">
           <label for="phone">WhatsApp</label>
-          <input id="phone" name="phone" type="tel" placeholder="(11) 99999-9999" required />
+          <input id="phone" name="phone" type="tel" placeholder="(11) 99999-9999" autocomplete="tel" required />
         </div>
 
-        <div class="form-row">
-          <label for="email">E-mail <small>opcional</small></label>
-          <input id="email" name="email" type="email" placeholder="seuemail@email.com" />
+        <div class="choice-group form-full" data-choice-group="bodyArea">
+          <span class="choice-label">Região do corpo</span>
+          <div class="choice-options" role="group" aria-label="Escolha a região do corpo">
+            <button type="button" class="choice-chip" data-choice-value="Braço">Braço</button>
+            <button type="button" class="choice-chip" data-choice-value="Antebraço">Antebraço</button>
+            <button type="button" class="choice-chip" data-choice-value="Perna">Perna</button>
+            <button type="button" class="choice-chip" data-choice-value="Costela">Costela</button>
+            <button type="button" class="choice-chip" data-choice-value="Peito">Peito</button>
+            <button type="button" class="choice-chip" data-choice-value="Costas">Costas</button>
+            <button type="button" class="choice-chip" data-choice-value="Outro">Outro</button>
+          </div>
+          <input type="hidden" name="bodyArea" id="body-area" />
         </div>
 
-        <div class="form-row">
-          <label for="body-area">Região do corpo</label>
-          <input id="body-area" name="bodyArea" type="text" placeholder="Braço, perna, costas..." required />
+        <div class="choice-group form-full" data-choice-group="size">
+          <span class="choice-label">Tamanho aproximado</span>
+          <div class="choice-options" role="group" aria-label="Escolha o tamanho aproximado">
+            <button type="button" class="choice-chip" data-choice-value="Pequena">Pequena</button>
+            <button type="button" class="choice-chip" data-choice-value="Média">Média</button>
+            <button type="button" class="choice-chip" data-choice-value="Grande">Grande</button>
+            <button type="button" class="choice-chip" data-choice-value="Fechamento">Fechamento</button>
+            <button type="button" class="choice-chip" data-choice-value="Ainda não sei">Ainda não sei</button>
+          </div>
+          <input type="hidden" name="size" id="size" />
         </div>
 
-        <div class="form-row">
-          <label for="size">Tamanho aproximado</label>
-          <select id="size" name="size" required>
-            <option value="">Selecione</option>
-            <option value="Pequena">Pequena</option>
-            <option value="Média">Média</option>
-            <option value="Grande">Grande</option>
-            <option value="Ainda não sei">Ainda não sei</option>
-          </select>
-        </div>
-
-        <div class="form-row">
-          <label for="style">Estilo desejado</label>
-          <select id="style" name="style" required>
-            <option value="">Selecione</option>
-            <option value="Fineline">Fineline</option>
-            <option value="Blackwork">Blackwork</option>
-            <option value="Realismo preto e cinza">Realismo preto e cinza</option>
-            <option value="Minimalista">Minimalista</option>
-            <option value="Autoral">Autoral</option>
-            <option value="Outro">Outro</option>
-          </select>
+        <div class="choice-group form-full" data-choice-group="style">
+          <span class="choice-label">Estilo desejado</span>
+          <div class="choice-options" role="group" aria-label="Escolha o estilo desejado">
+            <button type="button" class="choice-chip" data-choice-value="Autoral">Autoral</button>
+            <button type="button" class="choice-chip" data-choice-value="Blackwork">Blackwork</button>
+            <button type="button" class="choice-chip" data-choice-value="Fine line">Fine line</button>
+            <button type="button" class="choice-chip" data-choice-value="Realismo">Realismo</button>
+            <button type="button" class="choice-chip" data-choice-value="Old school">Old school</button>
+            <button type="button" class="choice-chip" data-choice-value="Livre">Livre</button>
+          </div>
+          <input type="hidden" name="style" id="style" />
         </div>
 
         <div class="form-row form-full">
-          <label for="idea">Descrição da ideia</label>
-          <textarea id="idea" name="idea" rows="5" placeholder="Conte a ideia, referências, detalhes importantes e estilo que você imagina." required></textarea>
+          <label for="idea">Ideia da tattoo</label>
+          <textarea id="idea" name="idea" rows="4" placeholder="Descreva em poucas palavras: tema, referência, estilo ou sensação que você quer passar."></textarea>
         </div>
 
         <div class="form-row form-full">
-          <label for="reference">Link de referência <small>opcional</small></label>
+          <label for="reference">Referência <small>opcional</small></label>
           <input id="reference" name="reference" type="url" placeholder="Instagram, Pinterest, Google Drive..." />
         </div>
 
-        <button class="btn btn-primary form-submit" type="submit">Enviar orçamento</button>
+        <button class="btn btn-primary form-submit" type="submit">Chamar no WhatsApp</button>
         <p class="form-feedback" id="form-feedback" aria-live="polite"></p>
       </form>
     </section>
@@ -203,17 +218,23 @@
       <div class="location-content" data-reveal>
         <span>Localização</span>
         <h2>Atendimento em São Paulo</h2>
-        <p>Estúdio com horário agendado para garantir uma experiência tranquila, organizada e exclusiva.</p>
-        <a href="https://www.google.com/maps/search/?api=1&query=S%C3%A3o%20Paulo%20SP" class="btn btn-primary" target="_blank" rel="noopener">Abrir no Google Maps</a>
+        <p>Atendimento com horário marcado. Abra a rota, chame no WhatsApp ou copie a localização.</p>
+
+        <div class="location-actions">
+          <a href="https://www.google.com/maps/search/?api=1&query=S%C3%A3o%20Paulo%20SP" class="btn btn-primary" target="_blank" rel="noopener">Abrir rota</a>
+          <a href="https://wa.me/5511941330786" class="btn btn-secondary" target="_blank" rel="noopener">WhatsApp</a>
+          <button class="btn btn-ghost" type="button" data-copy-address="São Paulo, SP">Copiar endereço</button>
+        </div>
       </div>
 
-      <div class="map-wrapper" data-reveal>
+      <div class="map-wrapper map-interactive" data-reveal>
         <iframe
           title="Mapa da localização do estúdio"
           src="https://www.google.com/maps?q=S%C3%A3o%20Paulo%2C%20SP&output=embed"
           loading="lazy"
           referrerpolicy="no-referrer-when-downgrade">
         </iframe>
+        <a class="map-floating-action btn btn-primary" href="https://www.google.com/maps/search/?api=1&query=S%C3%A3o%20Paulo%20SP" target="_blank" rel="noopener">Abrir no Maps</a>
       </div>
     </section>
 
@@ -301,7 +322,7 @@
       <a href="#orcamento">Orçamento</a>
       <a href="#localizacao">Localização</a>
       <a href="#avaliacoes">Avaliações</a>
-      <a href="https://www.instagram.com/" target="_blank" rel="noopener">Instagram</a>
+      <a href="https://www.instagram.com/_boytattoo/" target="_blank" rel="noopener">Instagram</a>
       <a href="https://wa.me/5511941330786" target="_blank" rel="noopener">WhatsApp</a>
     </div>
 

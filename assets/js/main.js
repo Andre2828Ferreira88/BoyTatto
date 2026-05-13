@@ -8,29 +8,39 @@ document.addEventListener("DOMContentLoaded", () => {
     document.documentElement.classList.add("reduced-motion");
   }
 
-  setCurrentYear();
-  setupHeroVideo();
-  setupBudgetForm();
-  setupMobileMenu();
-
-  initAnimatedNavbar();
-  initSmoothAnchors();
-  initButtonAnimations();
-  initPortfolioVideoModal();
-  initFormAnimations();
-  initScrollProgress();
-  initPortfolioAnimations();
-  initTestimonialsCarousel();
+  safeInit("Ano atual", setCurrentYear);
+  safeInit("Vídeo do hero", setupHeroVideo);
+  safeInit("Formulário", setupBudgetForm);
+  safeInit("Orçamento interativo", initInteractiveBudgetForm);
+  safeInit("Copiar endereço", initCopyAddress);
+  safeInit("Menu mobile", setupMobileMenu);
+  safeInit("Navbar", initNavbarAnimations);
+  safeInit("Links suaves", initSmoothAnchors);
+  safeInit("Botões", initButtonAnimations);
+  safeInit("Cards", initCardAnimations);
+  safeInit("Modal de vídeo", initPortfolioVideoModal);
+  safeInit("Animações do formulário", initFormAnimations);
+  safeInit("Barra de progresso", initScrollProgress);
+  safeInit("Portfólio", initPortfolioAnimations);
+  safeInit("Avaliações", initTestimonialsCarousel);
 
   if (!prefersReducedMotion) {
-    initHeroAnimations();
-    initScrollReveal();
-    initHeroParallax();
-    initHeroPointerGlow();
+    safeInit("Hero", initHeroAnimations);
+    safeInit("Scroll reveal", initScrollReveal);
+    safeInit("Parallax", initHeroParallax);
+    safeInit("Luz do hero", initHeroPointerGlow);
   } else {
-    revealEverythingImmediately();
+    safeInit("Revelar elementos", revealEverythingImmediately);
   }
 });
+
+function safeInit(name, fn) {
+  try {
+    if (typeof fn === "function") fn();
+  } catch (error) {
+    console.error(`Erro ao iniciar ${name}:`, error);
+  }
+}
 
 /* ========================================
    ANO ATUAL
@@ -133,15 +143,33 @@ function revealEverythingImmediately() {
    BOTÕES — MICROINTERAÇÕES + RIPPLE
    ======================================== */
 function initButtonAnimations() {
-  const buttons = document.querySelectorAll(".btn, button, .button, a[class*='btn']");
+  const buttons = document.querySelectorAll(
+    ".btn, button, .button, .nav-cta, .btn-nav-cta, .mobile-menu a, .hero-actions a, .nav-instagram"
+  );
+
+  if (!buttons.length) return;
 
   buttons.forEach((button) => {
-    if (button.classList.contains("js-animated-button")) return;
+    const shouldSkipAnimation =
+      button.classList.contains("portfolio-video-modal__close") ||
+      button.hasAttribute("data-close-video-modal") ||
+      button.classList.contains("menu-toggle") ||
+      button.classList.contains("whatsapp-float");
 
+    if (shouldSkipAnimation) {
+      button.classList.remove("js-animated-button", "is-pressing");
+      return;
+    }
+
+    if (button.dataset.animatedButton === "true") return;
+
+    button.dataset.animatedButton = "true";
     button.classList.add("js-animated-button");
 
     button.addEventListener("pointermove", (event) => {
       const rect = button.getBoundingClientRect();
+      if (!rect.width || !rect.height) return;
+
       const x = ((event.clientX - rect.left) / rect.width) * 100;
       const y = ((event.clientY - rect.top) / rect.height) * 100;
 
@@ -153,7 +181,7 @@ function initButtonAnimations() {
       button.classList.add("is-pressing");
     });
 
-    ["pointerup", "pointercancel", "pointerleave"].forEach((eventName) => {
+    ["pointerup", "pointercancel", "pointerleave", "blur"].forEach((eventName) => {
       button.addEventListener(eventName, () => {
         button.classList.remove("is-pressing");
       });
@@ -185,19 +213,35 @@ function createButtonRipple(event, button) {
 /* ========================================
    NAVBAR — SCROLL DINÂMICO
    ======================================== */
-function initAnimatedNavbar() {
-  const header = document.querySelector(".site-header, .header, .navbar");
-  if (!header) return;
+function initNavbarAnimations() {
+  const header =
+    document.querySelector("[data-navbar]") ||
+    document.querySelector(".site-header") ||
+    document.querySelector(".navbar") ||
+    document.querySelector("header");
+
+  if (!header) {
+    console.warn("Navbar não encontrada.");
+    return;
+  }
 
   let lastScrollY = window.scrollY;
   let ticking = false;
 
-  const updateHeader = () => {
+  header.classList.add("navbar-ready");
+
+  requestAnimationFrame(() => {
+    header.classList.add("navbar-visible");
+  });
+
+  const updateNavbar = () => {
     const currentScrollY = window.scrollY;
+    const menuIsOpen = document.body.classList.contains("is-menu-open");
+    const modalIsOpen = document.body.classList.contains("is-modal-open");
 
     header.classList.toggle("is-scrolled", currentScrollY > 20);
 
-    if (currentScrollY > lastScrollY && currentScrollY > 180 && !document.body.classList.contains("is-modal-open")) {
+    if (currentScrollY > lastScrollY && currentScrollY > 180 && !menuIsOpen && !modalIsOpen) {
       header.classList.add("is-hidden");
     } else {
       header.classList.remove("is-hidden");
@@ -209,62 +253,88 @@ function initAnimatedNavbar() {
 
   window.addEventListener("scroll", () => {
     if (!ticking) {
-      requestAnimationFrame(updateHeader);
+      requestAnimationFrame(updateNavbar);
       ticking = true;
     }
   }, { passive: true });
 
-  updateHeader();
+  window.addEventListener("resize", updateNavbar, { passive: true });
+  updateNavbar();
+}
+
+// Compatibilidade com versões anteriores do inicializador.
+function initAnimatedNavbar() {
+  initNavbarAnimations();
 }
 
 /* ========================================
    MOBILE MENU
    ======================================== */
 function setupMobileMenu() {
-  const toggle = document.getElementById("nav-toggle");
-  const nav = document.getElementById("main-nav");
-  const overlay = document.getElementById("mobile-overlay");
+  const toggle = document.getElementById("nav-toggle") || document.querySelector("[data-menu-toggle], .menu-toggle, .hamburger, .mobile-menu-button");
+  const nav = document.getElementById("main-nav") || document.querySelector("[data-mobile-menu], .mobile-menu, .nav-mobile, .menu-panel");
+  const overlay = document.getElementById("mobile-overlay") || document.querySelector("[data-menu-overlay], .mobile-overlay");
 
   if (!toggle || !nav) return;
 
-  const open = () => {
-    toggle.classList.add("is-active");
-    toggle.setAttribute("aria-expanded", "true");
-    nav.classList.add("is-open");
-    if (overlay) {
-      overlay.classList.add("is-active");
-      overlay.setAttribute("aria-hidden", "false");
-    }
-    document.body.classList.add("is-menu-open");
-  };
+  const links = nav.querySelectorAll("a");
 
   const close = () => {
     toggle.classList.remove("is-active");
     toggle.setAttribute("aria-expanded", "false");
     nav.classList.remove("is-open");
+    nav.setAttribute("aria-hidden", "true");
+
     if (overlay) {
       overlay.classList.remove("is-active");
       overlay.setAttribute("aria-hidden", "true");
     }
+
     document.body.classList.remove("is-menu-open");
   };
 
-  toggle.addEventListener("click", () => {
-    const isOpen = nav.classList.contains("is-open");
-    isOpen ? close() : open();
-  });
+  const open = () => {
+    toggle.classList.add("is-active");
+    toggle.setAttribute("aria-expanded", "true");
+    nav.classList.add("is-open");
+    nav.setAttribute("aria-hidden", "false");
 
+    if (overlay) {
+      overlay.classList.add("is-active");
+      overlay.setAttribute("aria-hidden", "false");
+    }
+
+    document.body.classList.add("is-menu-open");
+  };
+
+  const toggleMenu = (event) => {
+    event?.preventDefault();
+    event?.stopPropagation();
+    nav.classList.contains("is-open") ? close() : open();
+  };
+
+  close();
+
+  toggle.addEventListener("click", toggleMenu);
   overlay?.addEventListener("click", close);
 
-  nav.querySelectorAll("a").forEach((link) => {
-    link.addEventListener("click", () => {
-      if (nav.classList.contains("is-open")) close();
-    });
+  links.forEach((link) => {
+    link.addEventListener("click", close);
   });
 
-  document.addEventListener("keydown", (e) => {
-    if (e.key === "Escape" && nav.classList.contains("is-open")) close();
+  document.addEventListener("keydown", (event) => {
+    if (event.key === "Escape") close();
   });
+
+  document.addEventListener("click", (event) => {
+    if (!document.body.classList.contains("is-menu-open")) return;
+    if (nav.contains(event.target) || toggle.contains(event.target)) return;
+    close();
+  });
+
+  window.addEventListener("resize", () => {
+    if (window.innerWidth > 920) close();
+  }, { passive: true });
 }
 
 /* ========================================
@@ -317,10 +387,6 @@ function setupBudgetForm() {
     const requiredFields = [
       [data.name, "nome"],
       [data.phone, "WhatsApp"],
-      [data.bodyArea, "região do corpo"],
-      [data.size, "tamanho aproximado"],
-      [data.style, "estilo desejado"],
-      [data.idea, "descrição da ideia"],
     ];
 
     const missingField = requiredFields.find(([value]) => !value);
@@ -349,15 +415,14 @@ function cleanValue(value) {
 
 function buildWhatsAppMessage(data) {
   return [
-    "Olá, gostaria de solicitar um orçamento de tatuagem.",
+    "Olá! Vim pelo site e gostaria de solicitar um orçamento.",
     "",
     `Nome: ${data.name}`,
     `WhatsApp: ${data.phone}`,
-    data.email ? `E-mail: ${data.email}` : "E-mail: não informado",
-    `Região do corpo: ${data.bodyArea}`,
-    `Tamanho aproximado: ${data.size}`,
-    `Estilo: ${data.style}`,
-    `Ideia: ${data.idea}`,
+    `Região do corpo: ${data.bodyArea || "Não informado"}`,
+    `Tamanho aproximado: ${data.size || "Não informado"}`,
+    `Estilo: ${data.style || "Não informado"}`,
+    `Ideia: ${data.idea || "Não informado"}`,
     data.reference ? `Referência: ${data.reference}` : "Referência: não informada",
   ].join("\n");
 }
@@ -365,8 +430,89 @@ function buildWhatsAppMessage(data) {
 function showFeedback(element, message, isError) {
   if (!element) return;
   element.textContent = message;
+  element.dataset.type = isError ? "error" : "success";
   element.classList.toggle("error", Boolean(isError));
   element.classList.add("is-visible");
+
+  window.clearTimeout(element._feedbackTimer);
+  element._feedbackTimer = window.setTimeout(() => {
+    element.classList.remove("is-visible");
+  }, isError ? 3600 : 2600);
+}
+
+function initInteractiveBudgetForm() {
+  const groups = document.querySelectorAll("[data-choice-group]");
+  if (!groups.length) return;
+
+  groups.forEach((group) => {
+    const input = group.querySelector("input[type='hidden']");
+    const chips = group.querySelectorAll(".choice-chip");
+
+    chips.forEach((chip) => {
+      chip.setAttribute("aria-pressed", "false");
+
+      chip.addEventListener("click", () => {
+        chips.forEach((item) => {
+          item.classList.remove("is-active");
+          item.setAttribute("aria-pressed", "false");
+        });
+
+        chip.classList.add("is-active");
+        chip.setAttribute("aria-pressed", "true");
+
+        if (input) {
+          input.value = chip.dataset.choiceValue || chip.textContent.trim();
+          input.dispatchEvent(new Event("change", { bubbles: true }));
+        }
+      });
+    });
+  });
+}
+
+function initCopyAddress() {
+  const buttons = document.querySelectorAll("[data-copy-address]");
+  if (!buttons.length) return;
+
+  buttons.forEach((button) => {
+    button.addEventListener("click", async () => {
+      const address = button.dataset.copyAddress || "São Paulo, SP";
+      const originalText = button.textContent;
+
+      const setCopiedState = () => {
+        button.textContent = "Endereço copiado";
+        button.classList.add("is-copied");
+
+        window.setTimeout(() => {
+          button.textContent = originalText;
+          button.classList.remove("is-copied");
+        }, 1800);
+      };
+
+      try {
+        if (navigator.clipboard && window.isSecureContext) {
+          await navigator.clipboard.writeText(address);
+        } else {
+          const tempInput = document.createElement("textarea");
+          tempInput.value = address;
+          tempInput.setAttribute("readonly", "");
+          tempInput.style.position = "fixed";
+          tempInput.style.left = "-9999px";
+          document.body.appendChild(tempInput);
+          tempInput.select();
+          document.execCommand("copy");
+          tempInput.remove();
+        }
+
+        setCopiedState();
+      } catch (error) {
+        console.warn("Não foi possível copiar o endereço:", error);
+        button.textContent = "Copie: São Paulo, SP";
+        window.setTimeout(() => {
+          button.textContent = originalText;
+        }, 2200);
+      }
+    });
+  });
 }
 
 /* ========================================
@@ -400,6 +546,14 @@ function initFormAnimations() {
 /* ========================================
    PORTFÓLIO — CARDS + MODAL CINEMATOGRÁFICO
    ======================================== */
+function initCardAnimations() {
+  const cards = document.querySelectorAll(".portfolio-item, .portfolio-trigger, .testimonial-card");
+
+  cards.forEach((card) => {
+    card.classList.add("js-animated-card");
+  });
+}
+
 function initPortfolioAnimations() {
   const cards = document.querySelectorAll(".portfolio-item, .portfolio-card");
 
@@ -501,17 +655,29 @@ function initPortfolioVideoModal() {
    AVALIAÇÕES — CARROSSEL EM LOOP
    ======================================== */
 function initTestimonialsCarousel() {
-  const carousel = document.querySelector("[data-testimonials-carousel]");
-  if (!carousel) return;
+  const carousel =
+    document.querySelector("[data-testimonials-carousel]") ||
+    document.querySelector(".testimonials-carousel");
+
+  if (!carousel) {
+    console.warn("Carrossel de avaliações não encontrado.");
+    return;
+  }
 
   const track = carousel.querySelector(".testimonials-track");
-  if (!track) return;
+  if (!track) {
+    console.warn("Track de avaliações não encontrada.");
+    return;
+  }
 
-  const originalCards = Array.from(track.children);
-  if (!originalCards.length) return;
+  const cards = Array.from(track.querySelectorAll(".testimonial-card:not([aria-hidden='true'])"));
+  if (!cards.length) {
+    console.warn("Cards de avaliação não encontrados.");
+    return;
+  }
 
   if (track.dataset.duplicated !== "true") {
-    originalCards.forEach((card) => {
+    cards.forEach((card) => {
       const clone = card.cloneNode(true);
       clone.setAttribute("aria-hidden", "true");
       track.appendChild(clone);
@@ -520,59 +686,53 @@ function initTestimonialsCarousel() {
     track.dataset.duplicated = "true";
   }
 
-  const pause = () => {
-    track.style.animationPlayState = "paused";
-    carousel.classList.add("is-paused");
+  const startLoop = () => {
+    carousel.classList.remove("is-paused", "is-dragging");
+    track.style.animation = "none";
+    void track.offsetWidth;
+    track.style.animation = "testimonialsMarquee 36s linear infinite";
+    track.style.animationPlayState = "running";
   };
 
   const play = () => {
+    carousel.classList.remove("is-paused", "is-dragging");
     track.style.animationPlayState = "running";
-    carousel.classList.remove("is-paused");
   };
 
-  carousel.addEventListener("mouseenter", pause);
-  carousel.addEventListener("mouseleave", play);
-  carousel.addEventListener("focusin", pause);
-  carousel.addEventListener("focusout", play);
+  const pause = () => {
+    carousel.classList.add("is-paused");
+    track.style.animationPlayState = "paused";
+  };
+
+  startLoop();
+
+  const canHover = window.matchMedia("(hover: hover) and (pointer: fine)").matches;
+
+  if (canHover) {
+    carousel.addEventListener("mouseenter", pause);
+    carousel.addEventListener("mouseleave", play);
+    carousel.addEventListener("focusin", pause);
+    carousel.addEventListener("focusout", play);
+  }
+
+  carousel.addEventListener("touchstart", () => {
+    track.style.animationPlayState = "paused";
+  }, { passive: true });
+
+  carousel.addEventListener("touchend", () => {
+    window.setTimeout(play, 450);
+  }, { passive: true });
 
   document.addEventListener("visibilitychange", () => {
     document.hidden ? pause() : play();
   });
 
-  let isDown = false;
-  let startX = 0;
-  let scrollLeft = 0;
-
-  carousel.addEventListener("pointerdown", (event) => {
-    if (window.innerWidth > 768) return;
-
-    isDown = true;
-    startX = event.pageX - carousel.offsetLeft;
-    scrollLeft = carousel.scrollLeft;
-    pause();
-    carousel.classList.add("is-dragging");
-  });
-
-  carousel.addEventListener("pointermove", (event) => {
-    if (!isDown || window.innerWidth > 768) return;
-
-    const x = event.pageX - carousel.offsetLeft;
-    const walk = (x - startX) * 1.4;
-    carousel.scrollLeft = scrollLeft - walk;
-  });
-
-  const endDrag = () => {
-    if (!isDown) return;
-
-    isDown = false;
-    carousel.classList.remove("is-dragging");
-    setTimeout(play, 700);
-  };
-
-  carousel.addEventListener("pointerup", endDrag);
-  carousel.addEventListener("pointercancel", endDrag);
-  carousel.addEventListener("pointerleave", endDrag);
+  window.addEventListener("pageshow", startLoop);
+  window.addEventListener("resize", () => {
+    window.setTimeout(startLoop, 120);
+  }, { passive: true });
 }
+
 
 /* ========================================
    HERO — PARALLAX E LUZ NO CURSOR
