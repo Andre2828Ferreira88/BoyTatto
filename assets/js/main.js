@@ -554,7 +554,7 @@ function setupBudgetForm() {
       phone: cleanValue(formData.get("phone")),
       email: cleanValue(formData.get("email")),
       bodyArea: cleanValue(formData.get("bodyArea")),
-      size: cleanValue(formData.get("size")),
+      size: cleanValue(formData.get("tattooSize") || formData.get("size") || formData.get("tamanho")),
       style: cleanValue(formData.get("style")),
       idea: cleanValue(formData.get("idea")),
       reference: cleanValue(formData.get("reference")),
@@ -651,11 +651,11 @@ function initCopyAddress() {
 
   buttons.forEach((button) => {
     button.addEventListener("click", async () => {
-      const address = button.dataset.copyAddress || "São Paulo, SP";
+      const address = button.dataset.copyAddress || "Bragança Paulista, SP";
       const originalText = button.textContent;
 
       const setCopiedState = () => {
-        button.textContent = "Endereço copiado";
+        button.textContent = "Localização copiada";
         button.classList.add("is-copied");
 
         window.setTimeout(() => {
@@ -682,7 +682,7 @@ function initCopyAddress() {
         setCopiedState();
       } catch (error) {
         console.warn("Não foi possível copiar o endereço:", error);
-        button.textContent = "Copie: São Paulo, SP";
+        button.textContent = "Copie: Bragança Paulista, SP";
         window.setTimeout(() => {
           button.textContent = originalText;
         }, 2200);
