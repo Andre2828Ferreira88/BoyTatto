@@ -20,7 +20,10 @@ document.addEventListener("DOMContentLoaded", () => {
   safeInit("Links suaves", initSmoothAnchors);
   safeInit("Botões", initButtonAnimations);
   safeInit("Cards", initCardAnimations);
+  safeInit("Carrossel 3D do portfólio", initPortfolioRingCarousel);
   safeInit("Modal de vídeo", initPortfolioVideoModal);
+  safeInit("Correção de clique do portfólio 3D", initPortfolioRingClickFix);
+  safeInit("Correção de fechamento do modal", initPortfolioModalCloseFix);
   safeInit("Animações do formulário", initFormAnimations);
   safeInit("Barra de progresso", initScrollProgress);
   safeInit("Portfólio", initPortfolioAnimations);
@@ -102,6 +105,8 @@ function initPageLoader() {
       })
     );
   };
+
+  
 
   const waitForHeroVideo = () => {
     const video = document.querySelector(".hero-video");
@@ -730,8 +735,119 @@ function initCardAnimations() {
   });
 }
 
+
+function initPortfolioRingCarousel() {
+  const grid = document.querySelector(".portfolio-grid");
+
+  if (!grid) {
+    console.warn("[PORTFOLIO RING] .portfolio-grid não encontrada.");
+    return;
+  }
+
+  if (grid.dataset.ringCarouselReady === "true") {
+    console.info("[PORTFOLIO RING] carrossel já inicializado.");
+    return;
+  }
+
+  const searchRoot = grid.querySelector(".portfolio-ring-stage") || grid;
+  const originalItems = Array.from(
+    searchRoot.querySelectorAll(
+      ".portfolio-item, .portfolio-card, .portfolio-work, [data-video-src], [data-video], [data-video-url], button, a, article"
+    )
+  )
+    .filter((item) => item.querySelector("img"))
+    .filter((item) => item.dataset.clone !== "true" && item.getAttribute("data-carousel-clone") !== "true");
+
+  console.log("[PORTFOLIO RING] cards reais encontrados:", originalItems.length, originalItems);
+
+  if (originalItems.length < 2) {
+    console.error("[PORTFOLIO RING] Poucos cards encontrados. Verifique a estrutura da portfolio-grid.");
+    return;
+  }
+
+  const items = [...originalItems];
+  const minItems = 10;
+
+  if (items.length < minItems) {
+    const realCount = items.length;
+    const clonesNeeded = minItems - realCount;
+
+    for (let i = 0; i < clonesNeeded; i += 1) {
+      const clone = originalItems[i % realCount].cloneNode(true);
+      clone.setAttribute("aria-hidden", "true");
+      clone.dataset.clone = "true";
+      clone.setAttribute("data-carousel-clone", "true");
+      items.push(clone);
+    }
+  }
+
+  grid.dataset.ringCarouselReady = "true";
+  grid.removeAttribute("data-portfolio-carousel");
+  grid.removeAttribute("data-portfolio-curve");
+  grid.classList.remove("portfolio-carousel-3d", "portfolio-depth-carousel", "portfolio-curve-carousel");
+  grid.classList.add("portfolio-ring-carousel");
+  grid.setAttribute("data-portfolio-ring", "true");
+
+  const scene = document.createElement("div");
+  scene.className = "portfolio-ring-scene";
+
+  const stage = document.createElement("div");
+  stage.className = "portfolio-ring-stage";
+  stage.style.setProperty("--n", items.length);
+
+  items.forEach((item, index) => {
+    item.classList.remove(
+      "portfolio-carousel-card",
+      "portfolio-carousel-card--clone",
+      "portfolio-depth-carousel__card",
+      "portfolio-curve-carousel__card",
+      "portfolio-curve-carousel__clone"
+    );
+    item.classList.add("portfolio-ring-card");
+
+    item.style.removeProperty("--radius");
+    item.style.removeProperty("--card-w");
+    item.style.setProperty("--i", index);
+    item.style.setProperty("--n", items.length);
+    item.removeAttribute("data-reveal");
+
+    const oldOverlays = item.querySelectorAll(
+      ".portfolio-carousel-card__overlay, .portfolio-depth-carousel__overlay, .portfolio-curve-carousel__overlay"
+    );
+    oldOverlays.forEach((overlay) => overlay.remove());
+
+    if (!item.querySelector(".portfolio-ring-card__overlay")) {
+      const overlay = document.createElement("span");
+      overlay.className = "portfolio-ring-card__overlay";
+      overlay.textContent = "Ver vídeo";
+      item.appendChild(overlay);
+    }
+
+    stage.appendChild(item);
+  });
+
+  grid.innerHTML = "";
+  scene.appendChild(stage);
+  grid.appendChild(scene);
+
+  console.log("[PORTFOLIO RING] carrossel iniciado:", {
+    cardsReais: originalItems.length,
+    cardsTotais: items.length,
+    n: stage.style.getPropertyValue("--n"),
+    animacao: "portfolioRingRotate 58s linear infinite",
+    espacamentoTranslateZ: "4.6em"
+  });
+
+  window.BoyTattooPortfolioRing = {
+    realItems: originalItems.length,
+    totalItems: items.length,
+    animationDuration: "58s",
+    translateZSpacing: "4.6em"
+  };
+}
+
 function initPortfolioAnimations() {
-  const cards = document.querySelectorAll(".portfolio-item, .portfolio-card");
+  const cards = document.querySelectorAll(".portfolio-grid:not(.portfolio-ring-carousel) .portfolio-item:not(.portfolio-ring-card), .portfolio-grid:not(.portfolio-ring-carousel) .portfolio-card:not(.portfolio-ring-card)");
 
   cards.forEach((card, index) => {
     card.style.setProperty("--card-delay", `${Math.min(index * 70, 420)}ms`);
@@ -776,6 +892,10 @@ function initPortfolioVideoModal() {
       modal.setAttribute("aria-hidden", "false");
     });
 
+    window.openPortfolioVideo = function (src) {
+      openModal(src, null);
+    };
+
     if (!src) {
       setMessage("Processo em breve. O card já está preparado para receber o vídeo deste trabalho.");
       return;
@@ -785,7 +905,7 @@ function initPortfolioVideoModal() {
     video.play().catch(() => {
       setMessage("Vídeo em breve. Substitua o arquivo em assets/videos pelo vídeo deste trabalho.");
     });
-  };
+  };  
 
   const closeModal = () => {
     if (!modal.classList.contains("is-open")) return;
@@ -1039,3 +1159,195 @@ function initScrollProgress() {
     window.setTimeout(revealVisibleElements, 600);
   });
 })();
+
+function initPortfolioRingClickFix() {
+  const scene = document.querySelector(".portfolio-ring-scene");
+
+  if (!scene) {
+    console.warn("[PORTFOLIO RING CLICK] .portfolio-ring-scene não encontrada.");
+    return;
+  }
+
+  if (scene.dataset.clickFixReady === "true") return;
+  scene.dataset.clickFixReady = "true";
+
+  scene.addEventListener("click", function (event) {
+    const cards = Array.from(scene.querySelectorAll(".portfolio-ring-card"));
+
+    if (!cards.length) {
+      console.warn("[PORTFOLIO RING CLICK] Nenhum card encontrado.");
+      return;
+    }
+
+    const clickX = event.clientX;
+    const clickY = event.clientY;
+
+    let selectedCard = null;
+    let selectedScore = Infinity;
+
+    cards.forEach((card) => {
+      const rect = card.getBoundingClientRect();
+
+      const isInside =
+        clickX >= rect.left &&
+        clickX <= rect.right &&
+        clickY >= rect.top &&
+        clickY <= rect.bottom;
+
+      if (!isInside) return;
+
+      const area = rect.width * rect.height;
+      const centerX = rect.left + rect.width / 2;
+      const centerY = rect.top + rect.height / 2;
+
+      const distance =
+        Math.abs(clickX - centerX) +
+        Math.abs(clickY - centerY);
+
+      /*
+        Evita escolher card fantasma gigante/de lado.
+        O card correto tende a ter área normal e centro mais próximo.
+      */
+      const score = distance + Math.abs(area - 90000) * 0.002;
+
+      if (score < selectedScore) {
+        selectedScore = score;
+        selectedCard = card;
+      }
+    });
+
+    if (!selectedCard) {
+      console.warn("[PORTFOLIO RING CLICK] Clique não encontrou card válido.");
+      return;
+    }
+
+    const trigger =
+      selectedCard.matches("[data-video-src], [data-video], [data-video-url]")
+        ? selectedCard
+        : selectedCard.querySelector("[data-video-src], [data-video], [data-video-url]");
+
+    if (!trigger) {
+      console.warn("[PORTFOLIO RING CLICK] Card sem data-video:", selectedCard);
+      return;
+    }
+
+    const videoSrc =
+      trigger.dataset.videoSrc ||
+      trigger.dataset.video ||
+      trigger.dataset.videoUrl ||
+      trigger.getAttribute("data-video-src") ||
+      trigger.getAttribute("data-video") ||
+      trigger.getAttribute("data-video-url");
+
+    if (!videoSrc) {
+      console.warn("[PORTFOLIO RING CLICK] videoSrc vazio.");
+      return;
+    }
+
+    event.preventDefault();
+    event.stopPropagation();
+
+    openPortfolioModalFromRing(videoSrc);
+  });
+}
+
+function openPortfolioModalFromRing(videoSrc) {
+  const modal = document.getElementById("portfolioVideoModal");
+  const video = document.getElementById("portfolioVideoPlayer");
+  const modalMessage = document.querySelector("[data-video-modal-message]");
+
+  if (!modal || !video) {
+    console.warn("[PORTFOLIO RING CLICK] Modal ou vídeo não encontrado.");
+    return;
+  }
+
+  if (modalMessage) {
+    modalMessage.textContent = "Uma visão mais próxima do trabalho, do traço e do acabamento.";
+  }
+
+  video.pause();
+  video.removeAttribute("src");
+  video.load();
+
+  modal.classList.add("is-open");
+  document.body.classList.add("is-modal-open");
+
+  requestAnimationFrame(() => {
+    modal.classList.add("is-active");
+    modal.setAttribute("aria-hidden", "false");
+  });
+
+  video.src = videoSrc;
+
+  video.play().catch(() => {
+    if (modalMessage) {
+      modalMessage.textContent = "Vídeo em breve. Substitua o arquivo correspondente em assets/videos.";
+    }
+  });
+
+  if (!history.state || !history.state.portfolioModal) {
+    history.pushState({ portfolioModal: true }, "", window.location.href);
+  }
+}
+
+function initPortfolioModalCloseFix() {
+  if (document.documentElement.dataset.portfolioModalCloseFix === "true") return;
+  document.documentElement.dataset.portfolioModalCloseFix = "true";
+
+  document.addEventListener("click", (event) => {
+    const closeButton = event.target.closest(
+      "[data-close-video-modal], .portfolio-video-modal__close"
+    );
+
+    const backdrop = event.target.closest(".portfolio-video-modal__backdrop");
+
+    if (!closeButton && !backdrop) return;
+
+    event.preventDefault();
+    event.stopPropagation();
+
+    closePortfolioModalFromRing();
+
+    if (history.state && history.state.portfolioModal) {
+      history.back();
+    }
+  }, true);
+
+  document.addEventListener("keydown", (event) => {
+    if (event.key !== "Escape") return;
+
+    closePortfolioModalFromRing();
+
+    if (history.state && history.state.portfolioModal) {
+      history.back();
+    }
+  });
+
+  window.addEventListener("popstate", () => {
+    closePortfolioModalFromRing();
+  });
+}
+function closePortfolioModalFromRing() {
+  const modal = document.getElementById("portfolioVideoModal");
+  const video = document.getElementById("portfolioVideoPlayer");
+  const modalMessage = document.querySelector("[data-video-modal-message]");
+
+  if (!modal || !video) return;
+  if (!modal.classList.contains("is-open")) return;
+
+  modal.classList.remove("is-active");
+  modal.setAttribute("aria-hidden", "true");
+
+  window.setTimeout(() => {
+    modal.classList.remove("is-open");
+    document.body.classList.remove("is-modal-open");
+
+    video.pause();
+    video.removeAttribute("src");
+    video.load();
+
+    if (modalMessage) {
+      modalMessage.textContent = "Uma visão mais próxima do trabalho, do traço e do acabamento.";
+    }
+  }, prefersReducedMotion ? 0 : 320);
+}

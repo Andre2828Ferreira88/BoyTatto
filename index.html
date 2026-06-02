@@ -90,56 +90,67 @@
       </div>
 
       <div class="portfolio-grid">
-        <article class="portfolio-item" data-reveal="scale" data-video-src="assets/videos/portfolio-01.mp4">
-          <button class="portfolio-trigger" type="button" aria-label="Ver vídeo do trabalho Portfolio 01">
-            <img src="assets/img/portfolio-01.jpg" alt="Tatuagem autoral portfolio 01" loading="lazy" />
-            <span class="portfolio-overlay">
-              <span>Portfolio 01</span>
-              <strong>Ver processo</strong>
-            </span>
-          </button>
-        </article>
+        <button
+          class="portfolio-item"
+          type="button"
+          data-video-src="assets/videos/portfolio-01.mp4"
+          aria-label="Ver vídeo do trabalho Portfolio 01"
+        >
+          <img src="assets/img/portfolio-01.jpg" alt="Tatuagem autoral portfolio 01" loading="lazy" />
+        </button>
 
-        <article class="portfolio-item" data-reveal="scale" data-video-src="assets/videos/portfolio-02.mp4">
-          <button class="portfolio-trigger" type="button" aria-label="Ver vídeo do trabalho Portfolio 02">
-            <img src="assets/img/portfolio-02.jpg" alt="Tatuagem autoral portfolio 02" loading="lazy" />
-            <span class="portfolio-overlay">
-              <span>Portfolio 02</span>
-              <strong>Ver processo</strong>
-            </span>
-          </button>
-        </article>
+        <button
+          class="portfolio-item"
+          type="button"
+          data-video-src="assets/videos/portfolio-02.mp4"
+          aria-label="Ver vídeo do trabalho Portfolio 02"
+        >
+          <img src="assets/img/portfolio-02.jpg" alt="Tatuagem autoral portfolio 02" loading="lazy" />
+        </button>
 
-        <article class="portfolio-item" data-reveal="scale" data-video-src="assets/videos/portfolio-03.mp4">
-          <button class="portfolio-trigger" type="button" aria-label="Ver vídeo do trabalho Portfolio 03">
-            <img src="assets/img/portfolio-03.jpg" alt="Tatuagem autoral portfolio 03" loading="lazy" />
-            <span class="portfolio-overlay">
-              <span>Portfolio 03</span>
-              <strong>Ver processo</strong>
-            </span>
-          </button>
-        </article>
+        <button
+          class="portfolio-item"
+          type="button"
+          data-video-src="assets/videos/portfolio-03.mp4"
+          aria-label="Ver vídeo do trabalho Portfolio 03"
+        >
+          <img src="assets/img/portfolio-03.jpg" alt="Tatuagem autoral portfolio 03" loading="lazy" />
+        </button>
 
-        <article class="portfolio-item" data-reveal="scale" data-video-src="assets/videos/portfolio-04.mp4">
-          <button class="portfolio-trigger" type="button" aria-label="Ver vídeo do trabalho Portfolio 04">
-            <img src="assets/img/portfolio-04.jpg" alt="Tatuagem autoral portfolio 04" loading="lazy" />
-            <span class="portfolio-overlay">
-              <span>Portfolio 04</span>
-              <strong>Ver processo</strong>
-            </span>
-          </button>
-        </article>
+        <button
+          class="portfolio-item"
+          type="button"
+          data-video-src="assets/videos/portfolio-04.mp4"
+          aria-label="Ver vídeo do trabalho Portfolio 04"
+        >
+          <img src="assets/img/portfolio-04.jpg" alt="Tatuagem autoral portfolio 04" loading="lazy" />
+        </button>
 
-        <article class="portfolio-item" data-reveal="scale" data-video-src="assets/videos/portfolio-05.mp4">
-          <button class="portfolio-trigger" type="button" aria-label="Ver vídeo do trabalho Portfolio 05">
-            <img src="assets/img/portfolio-05.jpg" alt="Tatuagem autoral portfolio 05" loading="lazy" />
-            <span class="portfolio-overlay">
-              <span>Portfolio 05</span>
-              <strong>Ver processo</strong>
-            </span>
-          </button>
-        </article>
+        <button
+          class="portfolio-item"
+          type="button"
+          data-video-src="assets/videos/portfolio-05.mp4"
+          aria-label="Ver vídeo do trabalho Portfolio 05"
+        >
+          <img src="assets/img/portfolio-05.jpg" alt="Tatuagem autoral portfolio 05" loading="lazy" />
+        </button>
+      </div>
+    </section>
 
+
+    <!-- Seção Scroll Morph -->
+    <section class="bt-scroll-morph" aria-label="Arte em transição">
+      <div class="bt-scroll-morph__sticky">
+        <div class="bt-scroll-morph__media">
+          <img class="bt-scroll-morph__img bt-scroll-morph__img--base" src="assets/img/portfolio-03.jpg" alt="Tatuagem autoral traço" loading="lazy" />
+          <img class="bt-scroll-morph__img bt-scroll-morph__img--reveal" src="assets/img/portfolio-05.jpg" alt="Tatuagem autoral detalhe" loading="lazy" />
+        </div>
+        <div class="bt-scroll-morph__content">
+          <span class="bt-scroll-morph__eyebrow">Arte na pele</span>
+          <h2 class="bt-scroll-morph__title">Do traço à identidade.</h2>
+          <p class="bt-scroll-morph__text">Cada tatuagem nasce de uma ideia, evolui no detalhe e termina como uma marca única — autoral, técnica e permanente.</p>
+          <a href="#orcamento" class="btn btn-primary bt-scroll-morph__cta">Solicitar orçamento</a>
+        </div>
       </div>
     </section>
 
@@ -398,5 +409,10 @@
   </div>
 
   <script src="assets/js/main.js"></script>
+
+  <!-- GSAP Premium Animations -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+  <script src="assets/js/animations.js"></script>
 </body>
 </html>
