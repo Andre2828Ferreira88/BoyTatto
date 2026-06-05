@@ -7,31 +7,30 @@
   <title>Boy Tattoo | Tatuagem autoral em Bragança Paulista</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="assets/css/style.css" />
   <script>
-    !function(f,b,e,v,n,t,s) {
-      if (f.fbq) return;
-      n = f.fbq = function() {
-        n.callMethod ? n.callMethod.apply(n, arguments) : n.queue.push(arguments);
+    !function(f,b,e,v,n,t,s){
+      if(f.fbq)return;
+      n=f.fbq=function(){
+        n.callMethod?n.callMethod.apply(n,arguments):n.queue.push(arguments);
       };
-      if (!f._fbq) f._fbq = n;
-      n.push = n;
-      n.loaded = true;
-      n.version = '2.0';
-      n.queue = [];
-      t = b.createElement(e);
-      t.async = true;
-      t.src = v;
-      s = b.getElementsByTagName(e)[0];
-      s.parentNode.insertBefore(t, s);
-    }(window, document, 'script', 'https://connect.facebook.net/en_US/fbevents.js');
-
-    fbq('init', '1030888552851245');
-    fbq('track', 'PageView');
+      if(!f._fbq)f._fbq=n;
+      n.push=n;
+      n.loaded=true;
+      n.version='2.0';
+      n.queue=[];
+      t=b.createElement(e);
+      t.async=true;
+      t.src=v;
+      s=b.getElementsByTagName(e)[0];
+      s.parentNode.insertBefore(t,s);
+    }(window,document,'script','https://connect.facebook.net/en_US/fbevents.js');
+    fbq('init','1030888552851245');
+    fbq('track','PageView');
   </script>
   <noscript>
     <img height="1" width="1" style="display:none" src="https://www.facebook.com/tr?id=1030888552851245&ev=PageView&noscript=1" alt="" />
   </noscript>
-  <link rel="stylesheet" href="assets/css/style.css" />
 </head>
 <body class="is-loading">
 
@@ -113,109 +112,51 @@
         <p>Uma seleção de projetos feitos com atenção ao traço, composição, contraste e acabamento.</p>
       </div>
 
-      <div class="portfolio-grid portfolio-curve-carousel" data-portfolio-curve="true">
-        <div class="portfolio-curve-carousel__scene">
-          <div class="portfolio-curve-carousel__stage" style="--n: 8;">
+      <div class="portfolio-grid">
+        <button
+          class="portfolio-item"
+          type="button"
+          data-video-src="assets/videos/portfolio-01.mp4"
+          aria-label="Ver vídeo do trabalho Portfolio 01"
+        >
+          <img src="assets/img/portfolio-01.jpg" alt="Tatuagem autoral portfolio 01" loading="lazy" />
+        </button>
 
-            <!-- Card 0 -->
-            <button
-              class="portfolio-item portfolio-curve-carousel__card"
-              type="button"
-              style="--i: 0;"
-              data-video-src="assets/videos/portfolio-01.mp4"
-              aria-label="Ver vídeo do trabalho Portfolio 01"
-            >
-              <img src="assets/img/portfolio-01.jpg" alt="Tatuagem autoral portfolio 01" loading="lazy" />
-              <span class="portfolio-curve-carousel__overlay">Ver vídeo</span>
-            </button>
+        <button
+          class="portfolio-item"
+          type="button"
+          data-video-src="assets/videos/portfolio-02.mp4"
+          aria-label="Ver vídeo do trabalho Portfolio 02"
+        >
+          <img src="assets/img/portfolio-02.jpg" alt="Tatuagem autoral portfolio 02" loading="lazy" />
+        </button>
 
-            <!-- Card 1 -->
-            <button
-              class="portfolio-item portfolio-curve-carousel__card"
-              type="button"
-              style="--i: 1;"
-              data-video-src="assets/videos/portfolio-02.mp4"
-              aria-label="Ver vídeo do trabalho Portfolio 02"
-            >
-              <img src="assets/img/portfolio-02.jpg" alt="Tatuagem autoral portfolio 02" loading="lazy" />
-              <span class="portfolio-curve-carousel__overlay">Ver vídeo</span>
-            </button>
+        <button
+          class="portfolio-item"
+          type="button"
+          data-video-src="assets/videos/portfolio-03.mp4"
+          aria-label="Ver vídeo do trabalho Portfolio 03"
+        >
+          <img src="assets/img/portfolio-03.jpg" alt="Tatuagem autoral portfolio 03" loading="lazy" />
+        </button>
 
-            <!-- Card 2 -->
-            <button
-              class="portfolio-item portfolio-curve-carousel__card"
-              type="button"
-              style="--i: 2;"
-              data-video-src="assets/videos/portfolio-03.mp4"
-              aria-label="Ver vídeo do trabalho Portfolio 03"
-            >
-              <img src="assets/img/portfolio-03.jpg" alt="Tatuagem autoral portfolio 03" loading="lazy" />
-              <span class="portfolio-curve-carousel__overlay">Ver vídeo</span>
-            </button>
+        <button
+          class="portfolio-item"
+          type="button"
+          data-video-src="assets/videos/portfolio-04.mp4"
+          aria-label="Ver vídeo do trabalho Portfolio 04"
+        >
+          <img src="assets/img/portfolio-04.jpg" alt="Tatuagem autoral portfolio 04" loading="lazy" />
+        </button>
 
-            <!-- Card 3 -->
-            <button
-              class="portfolio-item portfolio-curve-carousel__card"
-              type="button"
-              style="--i: 3;"
-              data-video-src="assets/videos/portfolio-04.mp4"
-              aria-label="Ver vídeo do trabalho Portfolio 04"
-            >
-              <img src="assets/img/portfolio-04.jpg" alt="Tatuagem autoral portfolio 04" loading="lazy" />
-              <span class="portfolio-curve-carousel__overlay">Ver vídeo</span>
-            </button>
-
-            <!-- Card 4 -->
-            <button
-              class="portfolio-item portfolio-curve-carousel__card"
-              type="button"
-              style="--i: 4;"
-              data-video-src="assets/videos/portfolio-05.mp4"
-              aria-label="Ver vídeo do trabalho Portfolio 05"
-            >
-              <img src="assets/img/portfolio-05.jpg" alt="Tatuagem autoral portfolio 05" loading="lazy" />
-              <span class="portfolio-curve-carousel__overlay">Ver vídeo</span>
-            </button>
-
-            <!-- Clones para completar o anel 3D (aria-hidden) -->
-            <button
-              class="portfolio-item portfolio-curve-carousel__card"
-              type="button"
-              style="--i: 5;"
-              data-video-src="assets/videos/portfolio-01.mp4"
-              aria-label="Ver vídeo do trabalho Portfolio 01"
-              aria-hidden="true"
-            >
-              <img src="assets/img/portfolio-01.jpg" alt="" loading="lazy" />
-              <span class="portfolio-curve-carousel__overlay">Ver vídeo</span>
-            </button>
-
-            <button
-              class="portfolio-item portfolio-curve-carousel__card"
-              type="button"
-              style="--i: 6;"
-              data-video-src="assets/videos/portfolio-02.mp4"
-              aria-label="Ver vídeo do trabalho Portfolio 02"
-              aria-hidden="true"
-            >
-              <img src="assets/img/portfolio-02.jpg" alt="" loading="lazy" />
-              <span class="portfolio-curve-carousel__overlay">Ver vídeo</span>
-            </button>
-
-            <button
-              class="portfolio-item portfolio-curve-carousel__card"
-              type="button"
-              style="--i: 7;"
-              data-video-src="assets/videos/portfolio-03.mp4"
-              aria-label="Ver vídeo do trabalho Portfolio 03"
-              aria-hidden="true"
-            >
-              <img src="assets/img/portfolio-03.jpg" alt="" loading="lazy" />
-              <span class="portfolio-curve-carousel__overlay">Ver vídeo</span>
-            </button>
-
-          </div>
-        </div>
+        <button
+          class="portfolio-item"
+          type="button"
+          data-video-src="assets/videos/portfolio-05.mp4"
+          aria-label="Ver vídeo do trabalho Portfolio 05"
+        >
+          <img src="assets/img/portfolio-05.jpg" alt="Tatuagem autoral portfolio 05" loading="lazy" />
+        </button>
       </div>
     </section>
 
