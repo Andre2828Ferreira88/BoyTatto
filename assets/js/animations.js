@@ -1,8 +1,3 @@
-/**
- * BOY TATTOO — ANIMAÇÕES PREMIUM
- * GSAP + ScrollTrigger
- * Inspirado na experiência de sites premium de agência
- */
 
 (function () {
   'use strict';
@@ -10,9 +5,6 @@
   const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   const isMobile = () => window.innerWidth <= 860;
 
-  /* ============================================================
-     GUARDAR — aguarda GSAP + DOMContentLoaded
-     ============================================================ */
   function whenReady(fn) {
     const run = () => {
       if (typeof gsap !== 'undefined' && typeof ScrollTrigger !== 'undefined') {
@@ -43,9 +35,6 @@
     try { fn(); } catch (e) { console.warn('[Boy Tattoo Anim] ' + name + ':', e); }
   }
 
-  /* ============================================================
-     1. MARQUEE — Faixa de texto correndo premium
-     ============================================================ */
   function initMarquee() {
     const existing = document.querySelector('.bt-marquee');
     if (existing) return;

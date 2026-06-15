@@ -12,6 +12,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   safeInit("Ano atual", setCurrentYear);
   safeInit("Vídeo do hero", setupHeroVideo);
+  safeInit("Atribuição de tráfego", initTrafficAttribution);
   safeInit("Formulário", setupBudgetForm);
   safeInit("Orçamento interativo", initInteractiveBudgetForm);
   safeInit("Copiar endereço", initCopyAddress);
@@ -563,6 +564,7 @@ function setupBudgetForm() {
       style: cleanValue(formData.get("style")),
       idea: cleanValue(formData.get("idea")),
       reference: cleanValue(formData.get("reference")),
+      attribution: getTrafficAttribution(),
     };
 
     const requiredFields = [
@@ -595,7 +597,8 @@ function cleanValue(value) {
 }
 
 function buildWhatsAppMessage(data) {
-  return [
+  const attribution = formatTrafficAttribution(data.attribution);
+  const message = [
     "Olá! Vim pelo site e gostaria de solicitar um orçamento.",
     "",
     `Nome: ${data.name}`,
@@ -605,7 +608,13 @@ function buildWhatsAppMessage(data) {
     `Estilo: ${data.style || "Não informado"}`,
     `Ideia: ${data.idea || "Não informado"}`,
     data.reference ? `Referência: ${data.reference}` : "Referência: não informada",
-  ].join("\n");
+  ];
+
+  if (attribution) {
+    message.push("", attribution);
+  }
+
+  return message.join("\n");
 }
 
 function showFeedback(element, message, isError) {
@@ -620,6 +629,65 @@ function showFeedback(element, message, isError) {
     element.classList.remove("is-visible");
   }, isError ? 3600 : 2600);
 }
+function getTrafficAttribution() {
+  const stored = sessionStorage.getItem("boyTattooTrafficAttribution");
+  if (!stored) return {};
+
+  try {
+    return JSON.parse(stored) || {};
+  } catch (error) {
+    return {};
+  }
+}
+
+function setTrafficAttribution(data) {
+  sessionStorage.setItem("boyTattooTrafficAttribution", JSON.stringify(data));
+}
+
+function initTrafficAttribution() {
+  const params = new URLSearchParams(window.location.search);
+  const keys = ["utm_source", "utm_medium", "utm_campaign", "utm_content", "utm_term", "fbclid", "gclid"];
+  const current = getTrafficAttribution();
+  const next = { ...current };
+
+  keys.forEach((key) => {
+    const value = cleanValue(params.get(key));
+    if (value) next[key] = value;
+  });
+
+  if (!next.landing_page) {
+    next.landing_page = window.location.href.split("#")[0];
+  }
+
+  setTrafficAttribution(next);
+
+  document.querySelectorAll("[data-attribution-field]").forEach((field) => {
+    const key = field.dataset.attributionField;
+    field.value = next[key] || "";
+  });
+}
+
+function formatTrafficAttribution(attribution) {
+  if (!attribution || typeof attribution !== "object") return "";
+
+  const source = attribution.utm_source || "";
+  const medium = attribution.utm_medium || "";
+  const campaign = attribution.utm_campaign || "";
+  const content = attribution.utm_content || "";
+  const term = attribution.utm_term || "";
+
+  if (!source && !medium && !campaign && !content && !term) return "";
+
+  return [
+    "Origem do contato:",
+    source ? `utm_source: ${source}` : "",
+    medium ? `utm_medium: ${medium}` : "",
+    campaign ? `utm_campaign: ${campaign}` : "",
+    content ? `utm_content: ${content}` : "",
+    term ? `utm_term: ${term}` : "",
+  ].filter(Boolean).join("\n");
+}
+
 
 function initInteractiveBudgetForm() {
   const groups = document.querySelectorAll("[data-choice-group]");

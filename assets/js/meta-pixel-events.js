@@ -81,8 +81,30 @@
       value.includes('solicitar orçamento') ||
       value.includes('solicitar orcamento') ||
       value.includes('quero tatuar') ||
-      value.includes('falar com')
+      value.includes('falar com') ||
+      value.includes('chamar no whatsapp') ||
+      value.includes('enviar minha ideia')
     );
+  }
+
+  function getAttribution() {
+    try {
+      return JSON.parse(sessionStorage.getItem('boyTattooTrafficAttribution') || '{}') || {};
+    } catch (error) {
+      return {};
+    }
+  }
+
+  function addAttribution(payload) {
+    const attribution = getAttribution();
+    const result = Object.assign({}, payload || {});
+    const keys = ['utm_source', 'utm_medium', 'utm_campaign', 'utm_content', 'utm_term'];
+
+    keys.forEach(function (key) {
+      if (attribution[key]) result[key] = attribution[key];
+    });
+
+    return result;
   }
 
   function findRingCardFromPoint(event) {
@@ -164,50 +186,50 @@
       const explicitLabel = clickable.dataset.pixelLabel || label;
 
       if (explicitEvent === 'Lead' && once('explicit-lead-' + explicitLabel)) {
-        track('Lead', {
+        track('Lead', addAttribution({
           content_name: explicitLabel,
           content_category: 'CTA'
-        });
+        }));
 
-        trackCustom('ScheduleIntent', {
+        trackCustom('ScheduleIntent', addAttribution({
           button_text: explicitLabel
-        });
+        }));
       }
 
       if (link && isWhatsappLink(link) && once('whatsapp-' + href)) {
-        track('Contact', {
+        track('Contact', addAttribution({
           content_name: 'Clique WhatsApp',
           content_category: 'Contato',
           button_text: label || 'WhatsApp'
-        });
+        }));
 
-        trackCustom('WhatsAppClick', {
+        trackCustom('WhatsAppClick', addAttribution({
           button_text: label || 'WhatsApp',
           destination_url: href
-        });
+        }));
 
         return;
       }
 
       if (link && isInstagramLink(link) && once('instagram-' + href)) {
-        trackCustom('InstagramClick', {
+        trackCustom('InstagramClick', addAttribution({
           button_text: label || 'Instagram',
           destination_url: href
-        });
+        }));
 
         return;
       }
 
       if (isScheduleIntent(label) && once('schedule-' + label)) {
-        track('Lead', {
+        track('Lead', addAttribution({
           content_name: 'Clique em CTA de agendamento',
           content_category: 'CTA',
           button_text: label
-        });
+        }));
 
-        trackCustom('ScheduleIntent', {
+        trackCustom('ScheduleIntent', addAttribution({
           button_text: label
-        });
+        }));
       }
     }, true);
   }
@@ -219,16 +241,16 @@
 
       if (!videoData || !once('portfolio-video-' + videoData.videoUrl)) return;
 
-      track('ViewContent', {
+      track('ViewContent', addAttribution({
         content_name: videoData.title,
         content_category: 'Portfólio',
         content_type: 'video'
-      });
+      }));
 
-      trackCustom('PortfolioVideoOpen', {
+      trackCustom('PortfolioVideoOpen', addAttribution({
         video_url: videoData.videoUrl,
         title: videoData.title
-      });
+      }));
     }, true);
   }
 
@@ -248,14 +270,14 @@
 
         if (!once('form-' + formName, 1800)) return;
 
-        track('Lead', {
+        track('Lead', addAttribution({
           content_name: formName,
           content_category: 'Formulário'
-        });
+        }));
 
-        trackCustom('FormSubmitIntent', {
+        trackCustom('FormSubmitIntent', addAttribution({
           form_name: formName
-        });
+        }));
       });
     });
   }
@@ -291,9 +313,9 @@
 
         if (!match || !once('section-' + match.event, 60000)) return;
 
-        trackCustom(match.event, {
+        trackCustom(match.event, addAttribution({
           section: match.event
-        });
+        }));
 
         observer.unobserve(entry.target);
       });
